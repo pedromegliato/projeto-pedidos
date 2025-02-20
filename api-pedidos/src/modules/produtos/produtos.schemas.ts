@@ -1,27 +1,27 @@
 import { FastifySchema } from 'fastify';
 
-export const getAllClientesSchema: FastifySchema = {
-  description: 'Retorna todos os clientes cadastrados',
-  tags: ['Clientes'],
+export const getAllProdutosSchema: FastifySchema = {
+  description: 'Retorna todos os produtos cadastrados (exceto os desativados)',
+  tags: ['Produtos'],
   response: {
     200: {
       type: 'array',
       items: {
         type: 'object',
         properties: {
-          id_cliente: { type: 'number' },
+          id_produto: { type: 'number' },
           nome: { type: 'string' },
-          email: { type: 'string' },
-          telefone: { type: 'string' }
+          preco: { type: 'number' },
+          sku: { type: 'string' }
         }
       }
     }
   }
 };
 
-export const getClienteByIdSchema: FastifySchema = {
-  description: 'Retorna um cliente por ID',
-  tags: ['Clientes'],
+export const getProdutoByIdSchema: FastifySchema = {
+  description: 'Retorna um produto por ID',
+  tags: ['Produtos'],
   params: {
     type: 'object',
     properties: {
@@ -33,9 +33,10 @@ export const getClienteByIdSchema: FastifySchema = {
     200: {
       type: 'object',
       properties: {
-        id_cliente: { type: 'number' },
+        id_produto: { type: 'number' },
         nome: { type: 'string' },
-        email: { type: 'string' }
+        preco: { type: 'number' },
+        sku: { type: 'string' }
       }
     },
     404: {
@@ -47,36 +48,33 @@ export const getClienteByIdSchema: FastifySchema = {
   }
 };
 
-export const createClienteSchema: FastifySchema = {
-  description: 'Cria um novo cliente',
-  tags: ['Clientes'],
+export const createProdutoSchema: FastifySchema = {
+  description: 'Cria um novo produto',
+  tags: ['Produtos'],
   body: {
     type: 'object',
-    required: ['nome', 'email'],
+    required: ['nome', 'preco'],
     properties: {
       nome: { type: 'string' },
-      email: { type: 'string' },
-      telefone: { type: 'string' },
-      endereco: { type: 'string' },
-      cpf: { type: 'string' },
-      data_nascimento: { type: 'string', format: 'date' }
+      preco: { type: 'number' }
     }
   },
   response: {
     201: {
       type: 'object',
       properties: {
-        id_cliente: { type: 'number' },
+        id_produto: { type: 'number' },
         nome: { type: 'string' },
-        email: { type: 'string' }
+        preco: { type: 'number' },
+        sku: { type: 'string' }
       }
     }
   }
 };
 
-export const updateClienteSchema: FastifySchema = {
-  description: 'Atualiza um cliente existente',
-  tags: ['Clientes'],
+export const updateProdutoSchema: FastifySchema = {
+  description: 'Atualiza um produto existente',
+  tags: ['Produtos'],
   params: {
     type: 'object',
     properties: {
@@ -88,20 +86,17 @@ export const updateClienteSchema: FastifySchema = {
     type: 'object',
     properties: {
       nome: { type: 'string' },
-      email: { type: 'string' },
-      telefone: { type: 'string' },
-      endereco: { type: 'string' },
-      cpf: { type: 'string' },
-      data_nascimento: { type: 'string', format: 'date' }
+      preco: { type: 'number' }
     }
   },
   response: {
     200: {
       type: 'object',
       properties: {
-        id_cliente: { type: 'number' },
+        id_produto: { type: 'number' },
         nome: { type: 'string' },
-        email: { type: 'string' }
+        preco: { type: 'number' },
+        sku: { type: 'string' }
       }
     },
     404: {
@@ -113,9 +108,9 @@ export const updateClienteSchema: FastifySchema = {
   }
 };
 
-export const deleteClienteSchema: FastifySchema = {
-  description: 'Desativa (soft delete) um cliente por ID',
-  tags: ['Clientes'],
+export const deleteProdutoSchema: FastifySchema = {
+  description: 'Desativa (soft delete) um produto por ID',
+  tags: ['Produtos'],
   params: {
     type: 'object',
     properties: {
@@ -124,9 +119,7 @@ export const deleteClienteSchema: FastifySchema = {
     required: ['id']
   },
   response: {
-    204: {
-      type: 'null'
-    },
+    204: { type: 'null' },
     404: {
       type: 'object',
       properties: {

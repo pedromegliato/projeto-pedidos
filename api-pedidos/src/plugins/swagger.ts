@@ -14,6 +14,7 @@ async function swaggerPlugin(fastify: FastifyInstance) {
       },
       tags: [
         { name: 'Clientes', description: 'Gestão de clientes' },
+        { name: 'Produtos', description: 'Gestão de produtos' },
         { name: 'Healf Check', description: 'Status da API' }
       ]
     }
