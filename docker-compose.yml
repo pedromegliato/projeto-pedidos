@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_pedidos
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_pedidos
+      MYSQL_USER: pedro
+      MYSQL_PASSWORD: pedro123
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/00-init.sql
+      - ./database/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
+
+  api:
+    build: ./api-pedidos
+    container_name: api_pedidos
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: pedro
+      DB_PASS: pedro123
+      DB_NAME: db_pedidos
+      API_PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+volumes:
+  db_data:
