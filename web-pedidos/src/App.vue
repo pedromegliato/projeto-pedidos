@@ -1,21 +1,13 @@
 <template>
-  <v-app>
-    <v-main>
-      <router-view/>
-    </v-main>
-  </v-app>
+  <MainLayout />
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from 'vue';
+import MainLayout from '@/layouts/MainLayout.vue';
 
 export default defineComponent({
   name: 'App',
-
-  data () {
-    return {
-      //
-    }
-  },
-})
+  components: { MainLayout },
+});
 </script>
