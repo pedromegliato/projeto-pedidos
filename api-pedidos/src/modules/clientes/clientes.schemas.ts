@@ -124,9 +124,7 @@ export const deleteClienteSchema: FastifySchema = {
     required: ['id']
   },
   response: {
-    204: {
-      type: 'null'
-    },
+    204: { type: 'null' },
     404: {
       type: 'object',
       properties: {

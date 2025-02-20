@@ -1,3 +1,4 @@
+import { IsNull } from 'typeorm';
 import { AppDataSource } from '../../config/ormconfig';
 import { Pedido } from '../../entities/Pedido';
 import { CreatePedidoDTO, UpdatePedidoDTO } from './pedidos.dto';
@@ -6,12 +7,15 @@ export class PedidosService {
   private repo = AppDataSource.getRepository(Pedido);
 
   async findAll(): Promise<Pedido[]> {
-    return this.repo.find({ relations: ['cliente', 'itens'] });
+    return this.repo.find({
+      where: { data_desativacao: IsNull() },
+      relations: ['cliente', 'itens']
+    });
   }
 
   async findById(id: number): Promise<Pedido | null> {
     return this.repo.findOne({
-      where: { id_pedido: id },
+      where: { id_pedido: id, data_desativacao: IsNull() },
       relations: ['cliente', 'itens']
     });
   }
@@ -37,7 +41,10 @@ export class PedidosService {
   }
 
   async delete(id: number): Promise<boolean> {
-    const result = await this.repo.delete(id);
-    return result.affected !== 0;
+    const pedido = await this.repo.findOneBy({ id_pedido: id });
+    if (!pedido || pedido.data_desativacao) return false;
+    pedido.data_desativacao = new Date();
+    await this.repo.save(pedido);
+    return true;
   }
 }

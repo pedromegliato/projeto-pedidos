@@ -8,9 +8,8 @@ import {
     OneToMany,
     JoinColumn
   } from 'typeorm';
-
-import { Cliente } from './Clientes';
 import { PedidoItem } from './PedidoItens';
+import { Cliente } from './Clientes';
   
   @Entity({ name: 'pedidos' })
   export class Pedido {
@@ -32,5 +31,8 @@ import { PedidoItem } from './PedidoItens';
   
     @UpdateDateColumn()
     data_atualizacao: Date;
+  
+    @Column({ type: 'date', nullable: true })
+    data_desativacao?: Date;
   }
   

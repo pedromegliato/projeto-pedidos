@@ -1,3 +1,4 @@
+import { IsNull } from 'typeorm';
 import { AppDataSource } from '../../config/ormconfig';
 import { Cliente } from '../../entities/Clientes';
 import { CreateClienteDTO, UpdateClienteDTO } from './clientes.dto';
@@ -6,11 +7,11 @@ export class ClientesService {
   private repo = AppDataSource.getRepository(Cliente);
 
   async findAll(): Promise<Cliente[]> {
-    return this.repo.find();
+    return this.repo.find({ where: { data_desativacao: IsNull() } });
   }
 
   async findById(id: number): Promise<Cliente | null> {
-    return this.repo.findOneBy({ id_cliente: id });
+    return this.repo.findOne({ where: { id_cliente: id, data_desativacao: IsNull() } });
   }
 
   async create(data: CreateClienteDTO): Promise<Cliente> {
@@ -32,7 +33,10 @@ export class ClientesService {
   }
 
   async delete(id: number): Promise<boolean> {
-    const result = await this.repo.delete(id);
-    return result.affected !== 0;
+    const cliente = await this.repo.findOneBy({ id_cliente: id });
+    if (!cliente || cliente.data_desativacao) return false;
+    cliente.data_desativacao = new Date();
+    await this.repo.save(cliente);
+    return true;
   }
 }
