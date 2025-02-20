@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npm run build:ts && tsc -p test/tsconfig.json && c8 node --test -r ts-node/register \"test/**/*.ts\"",
+    "test": "c8 node --test --loader ts-node/esm test/**/*.ts",
     "start": "npm run build:ts && fastify start -l info dist/app.js",
     "build:ts": "tsc",
     "watch:ts": "tsc -w",
@@ -33,6 +33,7 @@
     "@fastify/swagger": "^9.4.2",
     "@fastify/swagger-ui": "^5.2.2",
     "@types/node": "^22.13.4",
+    "fastify-cli": "^7.3.0",
     "c8": "^10.1.2",
     "concurrently": "^9.1.2",
     "fastify-tsconfig": "^3.0.0",

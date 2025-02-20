@@ -11,6 +11,6 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER || 'root',
   password: process.env.DB_PASS || 'root',
   database: process.env.DB_NAME || 'db_pedidos',
-  synchronize: true,
+  synchronize: false,
   logging: true,
   entities: [Cliente, Pedido, PedidoItem, Produto],});
