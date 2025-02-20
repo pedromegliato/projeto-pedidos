@@ -9,8 +9,8 @@ import {
     JoinColumn
   } from 'typeorm';
 
-import { PedidoItem } from './PedidoItens';
 import { Cliente } from './Clientes';
+import { PedidoItem } from './PedidoItens';
   
   @Entity({ name: 'pedidos' })
   export class Pedido {
