@@ -34,5 +34,8 @@ import {
   
     @UpdateDateColumn()
     data_atualizacao: Date;
+  
+    @Column({ type: 'date', nullable: true })
+    data_desativacao?: Date;
   }
   
