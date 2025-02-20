@@ -151,36 +151,27 @@ O projeto foi preparado para ser executado em um ambiente Docker, utilizando uma
 ### Dockerfile
 
 ```dockerfile
-# Etapa 1: Build (compatível com ARM)
+# Etapa 1: Build
 FROM node:20-alpine AS builder
 WORKDIR /app
-
-# Copia os arquivos de dependências e instala (com cache para acelerar builds)
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
-
-# Copia a configuração do TypeScript e o código fonte
 COPY tsconfig.json ./
 COPY src ./src
+RUN yarn build:ts
 
-# Compila o projeto (gera o diretório "dist")
-RUN yarn build
-
-# Etapa 2: Imagem de Runtime
+# Etapa 2: Runtime
 FROM node:20-alpine
 WORKDIR /app
 
-# Copia os arquivos de produção
+# Copia APENAS as dependências de produção (incluindo fastify-cli)
 COPY --from=builder /app/package.json /app/yarn.lock ./
-RUN yarn install --production --frozen-lockfile
-
+COPY --from=builder /app/node_modules ./node_modules 
 COPY --from=builder /app/dist ./dist
 
-# Expor a porta configurada (API_PORT = 3000)
 EXPOSE 3000
 
-# Inicia a aplicação
-CMD ["node", "dist/app.js"]
+CMD ["node_modules/.bin/fastify", "start", "-l", "info", "dist/app.js"]
 ```
 
 ### docker-compose
