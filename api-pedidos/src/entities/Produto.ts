@@ -19,7 +19,6 @@ import {
     @Column({ type: 'decimal', precision: 10, scale: 2 })
     preco: number;
   
-    // SKU gerado automaticamente (exemplo usando UUID)
     @Column({ type: 'varchar', length: 36, unique: true })
     sku: string;
   
@@ -31,7 +30,6 @@ import {
   
     @BeforeInsert()
     generateSKU() {
-      // Você pode ajustar a lógica para gerar um SKU conforme necessário
       this.sku = uuidv4();
     }
   }
