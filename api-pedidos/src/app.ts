@@ -1,4 +1,4 @@
-import path, { join } from 'node:path';
+import { join } from 'node:path';
 import AutoLoad from '@fastify/autoload';
 import { FastifyPluginAsync } from 'fastify';
 import dotenv from 'dotenv';

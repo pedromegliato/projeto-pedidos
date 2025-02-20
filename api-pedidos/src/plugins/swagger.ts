@@ -10,13 +10,14 @@ async function swaggerPlugin(fastify: FastifyInstance) {
       info: {
         title: 'API Pedidos',
         version: '1.0.0',
-        description: 'Documentação Oficial'
+        description: 'Documentação de uso da api de pedidos'
       },
       tags: [
         { name: 'Clientes', description: 'Gestão de clientes' },
         { name: 'Produtos', description: 'Gestão de produtos' },
         { name: 'Pedidos', description: 'Gestão de pedidos' },
-        { name: 'Healf Check', description: 'Status da API' }
+        { name: 'Pedido Itens', description: 'Gestão de (Pedido Itens)' },
+        { name: 'Health Check', description: 'Status de saúde da API' }
       ]
     }
   });
