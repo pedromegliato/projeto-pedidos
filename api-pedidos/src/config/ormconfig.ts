@@ -1,14 +1,16 @@
 import { DataSource } from 'typeorm';
 import { Cliente } from '../entities/Clientes';
+import { Pedido } from '../entities/Pedido';
+import { PedidoItem } from '../entities/PedidoItens';
+import { Produto } from '../entities/Produto';
 
 export const AppDataSource = new DataSource({
-  type: 'mysql',
+  type: 'mariadb',
   host: process.env.DB_HOST || 'localhost',
   port: Number(process.env.DB_PORT) || 3306,
   username: process.env.DB_USER || 'root',
   password: process.env.DB_PASS || 'root',
   database: process.env.DB_NAME || 'db_pedidos',
-  synchronize: false, // use true apenas em desenvolvimento!
-  logging: false,
-  entities: [Cliente /*, Product, Order, OrderItem */],
-});
+  synchronize: true,
+  logging: true,
+  entities: [Cliente, Pedido, PedidoItem, Produto],});
