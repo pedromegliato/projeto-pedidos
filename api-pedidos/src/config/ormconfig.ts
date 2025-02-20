@@ -5,7 +5,7 @@ import { PedidoItem } from '../entities/PedidoItens';
 import { Produto } from '../entities/Produto';
 
 export const AppDataSource = new DataSource({
-  type: 'mariadb',
+  type: 'mysql',
   host: process.env.DB_HOST || 'localhost',
   port: Number(process.env.DB_PORT) || 3306,
   username: process.env.DB_USER || 'root',

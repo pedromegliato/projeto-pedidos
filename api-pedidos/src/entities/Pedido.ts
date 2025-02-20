@@ -19,7 +19,7 @@ import { Cliente } from './Clientes';
     @Column({ type: 'date' })
     data: Date;
   
-    @ManyToOne(() => Cliente)
+    @ManyToOne(() => Cliente, { nullable: false })
     @JoinColumn({ name: 'id_cliente' })
     cliente: Cliente;
   
