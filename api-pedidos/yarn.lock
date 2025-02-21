@@ -33,6 +33,14 @@
   resolved "https://registry.npmjs.org/@fastify/autoload/-/autoload-6.1.0.tgz#bdaeedd36243e8c07ff436219a69846e6ea1ce87"
   integrity sha512-ltFiI5u5KETSqVXq9AIYtiTqrQn4fvuiETR8N78L119JMLJUqHZ6EqZw77syrMf1N9OMCK8z7YktntK9LaD7Pw==
 
+"@fastify/cors@^10.0.2":
+  version "10.0.2"
+  resolved "https://registry.yarnpkg.com/@fastify/cors/-/cors-10.0.2.tgz#088df281ff847dcb10a083925cd84d4f62f91b4b"
+  integrity sha512-DGdxOG36sS/tZv1NFiCJGi7wGuXOSPL2CmNX5PbOVKx0C6LuIALRMrqLByHTCcX1Rbl8NJ9IWlJex32bzydvlw==
+  dependencies:
+    fastify-plugin "^5.0.0"
+    mnemonist "0.39.8"
+
 "@fastify/deepmerge@^2.0.0":
   version "2.0.2"
   resolved "https://registry.npmjs.org/@fastify/deepmerge/-/deepmerge-2.0.2.tgz#5dcbda2acb266e309b8a1ca92fa48b2125e65fc0"
@@ -1053,6 +1061,13 @@ mkdirp@^2.1.3:
   resolved "https://registry.npmjs.org/mkdirp/-/mkdirp-2.1.6.tgz#964fbcb12b2d8c5d6fbc62a963ac95a273e2cc19"
   integrity sha512-+hEnITedc8LAtIP9u3HJDFIdcLV2vXP33sqLLIzkv1Db1zO/1OxbvYf0Y1OC/S/Qo5dxHXepofhmxL02PsKe+A==
 
+mnemonist@0.39.8:
+  version "0.39.8"
+  resolved "https://registry.yarnpkg.com/mnemonist/-/mnemonist-0.39.8.tgz#9078cd8386081afd986cca34b52b5d84ea7a4d38"
+  integrity sha512-vyWo2K3fjrUw8YeeZ1zF0fy6Mu59RHokURlld8ymdUPjMlD9EC9ov1/YPqTgqRvUN9nTr3Gqfz29LYAmu0PHPQ==
+  dependencies:
+    obliterator "^2.0.1"
+
 ms@^2.1.3:
   version "2.1.3"
   resolved "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
@@ -1093,6 +1108,11 @@ object-assign@^4.0.1:
   version "4.1.1"
   resolved "https://registry.npmjs.org/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
   integrity sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==
+
+obliterator@^2.0.1:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/obliterator/-/obliterator-2.0.5.tgz#031e0145354b0c18840336ae51d41e7d6d2c76aa"
+  integrity sha512-42CPE9AhahZRsMNslczq0ctAEtqk8Eka26QofnqC346BZdHDySk3LWka23LI7ULIw11NmltpiLagIq8gBozxTw==
 
 on-exit-leak-free@^2.1.0:
   version "2.1.2"

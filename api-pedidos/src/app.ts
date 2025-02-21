@@ -4,10 +4,14 @@ import AutoLoad from '@fastify/autoload';
 import { FastifyPluginAsync } from 'fastify';
 import dotenv from 'dotenv';
 import { AppDataSource } from './config/ormconfig';
+import cors from '@fastify/cors';
+
 
 dotenv.config();
 
 const app: FastifyPluginAsync = async (fastify, opts) => {
+
+  await fastify.register(cors, { origin: '*' });
 
   try {
     await AppDataSource.initialize();

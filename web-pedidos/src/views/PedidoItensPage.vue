@@ -53,7 +53,13 @@
       const fetchItens = async () => {
         try {
           const response = await getPedidoItens(props.pedidoId);
-          itens.value = response.data;
+          itens.value = response.data.map(item => ({
+            id_pedido_item: item.id_pedido_item,
+            produto: item.produto.nome, // transforma o objeto em string
+            quantidade: item.quantidade,
+            preco: item.preco,
+          }));
+
         } catch (error) {
           console.error(error);
         }
