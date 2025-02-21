@@ -1,13 +1,12 @@
 import { FastifyInstance } from 'fastify';
 import { PedidosController } from './pedidos.controller';
 import { 
-    getAllPedidosSchema,
-    getPedidoByIdSchema, 
-    createPedidoSchema, 
-    updatePedidoSchema, 
-    deletePedidoSchema 
+  getAllPedidosSchema,
+  getPedidoByIdSchema, 
+  createPedidoSchema, 
+  updatePedidoSchema, 
+  deletePedidoSchema 
 } from './pedidos.schemas';
-
 
 export default async function (fastify: FastifyInstance, options: any) {
   fastify.get('/', { schema: getAllPedidosSchema }, PedidosController.getAll);

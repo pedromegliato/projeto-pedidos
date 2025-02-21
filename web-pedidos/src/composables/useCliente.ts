@@ -17,7 +17,7 @@ export const useCliente = () => {
       clientes.value = data;
     } catch (err) {
       error('Erro ao carregar clientes');
-      console.error(err);
+      console.error('Erro ao buscar clientes:', err);
     } finally {
       loading.value = false;
     }
@@ -29,14 +29,14 @@ export const useCliente = () => {
         await updateCliente(cliente.id_cliente, cliente);
         success('Cliente atualizado com sucesso');
       } else {
-        await createCliente(cliente);
+        const response = await createCliente(cliente);
         success('Cliente criado com sucesso');
+        clientes.value.push(response.data);
       }
-      await fetchClientes();
       modalOpen.value = false;
     } catch (err) {
       error('Erro ao salvar cliente');
-      console.error(err);
+      console.error('Erro ao salvar cliente:', err);
     }
   };
 
@@ -47,7 +47,7 @@ export const useCliente = () => {
       success('Cliente excluído com sucesso');
     } catch (err) {
       error('Erro ao excluir cliente');
-      console.error(err);
+      console.error('Erro ao excluir cliente:', err);
     }
   };
 
@@ -58,6 +58,6 @@ export const useCliente = () => {
     selectedCliente,
     fetchClientes,
     saveCliente,
-    deleteClienteHandler,
+    deleteClienteHandler
   };
 };

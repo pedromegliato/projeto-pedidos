@@ -16,7 +16,10 @@
               label="Preço"
               v-model="precoFormatado"
               prefix="R$"
-              :rules="[v => !!v || 'Obrigatório', v => /^[0-9]+([,][0-9]{1,2})?$/.test(v.replace('R$ ', '')) || 'Formato inválido']"
+              :rules="[
+                v => !!v || 'Obrigatório',
+                v => /^(?:\d{1,3}(?:\.\d{3})*|\d+)(,\d{1,2})?$/.test(v.replace('R$ ', '')) || 'Formato inválido'
+              ]"
               required
               @blur="formatarPreco"
               @focus="limparFormatacao"

@@ -1,8 +1,7 @@
-// src/modules/pedidos/pedidos.schemas.ts
 import { FastifySchema } from 'fastify';
 
 export const getAllPedidosSchema: FastifySchema = {
-  description: 'Retorna todos os pedidos cadastrados',
+  description: 'Retorna todos os pedidos cadastrados com todas as informações',
   tags: ['Pedidos'],
   response: {
     200: {
@@ -11,8 +10,45 @@ export const getAllPedidosSchema: FastifySchema = {
         type: 'object',
         properties: {
           id_pedido: { type: 'number' },
-          data: { type: 'string', format: 'date' },
-          id_cliente: { type: 'number' }
+          data: { type: 'string', format: 'date-time' },
+          cliente: {
+            type: 'object',
+            properties: {
+              id_cliente: { type: 'number' },
+              nome: { type: 'string' },
+              email: { type: 'string' },
+              telefone: { type: 'string' },
+              endereco: { type: 'string' },
+              cpf: { type: 'string' },
+              data_nascimento: { type: 'string', format: 'date' }
+            }
+          },
+          itens: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                id_pedido_item: { type: 'number' },
+                qtde: { type: 'number' },
+                preco: { type: 'number' },
+                produto: {
+                  type: 'object',
+                  properties: {
+                    id_produto: { type: 'number' },
+                    nome: { type: 'string' },
+                    preco: { type: 'number' },
+                    sku: { type: 'string' }
+                  }
+                },
+                data_criacao: { type: 'string', format: 'date-time' },
+                data_atualizacao: { type: 'string', format: 'date-time' },
+                data_desativacao: { type: ['string', 'null'], format: 'date' }
+              }
+            }
+          },
+          data_criacao: { type: 'string', format: 'date-time' },
+          data_atualizacao: { type: 'string', format: 'date-time' },
+          data_desativacao: { type: ['string', 'null'], format: 'date' }
         }
       }
     }
@@ -50,10 +86,40 @@ export const createPedidoSchema: FastifySchema = {
   tags: ['Pedidos'],
   body: {
     type: 'object',
-    required: ['data', 'id_cliente'],
+    required: ['data', 'cliente'],
     properties: {
-      data: { type: 'string', format: 'date' },
-      id_cliente: { type: 'number' }
+      data: { type: 'string', format: 'date-time' },
+      cliente: {
+        type: 'object',
+        required: ['id_cliente'],
+        properties: {
+          id_cliente: { type: 'number' },
+          nome: { type: 'string' },
+          email: { type: 'string' },
+          telefone: { type: 'string' }
+        }
+      },
+      itens: {
+        type: 'array',
+        items: {
+          type: 'object',
+          required: ['produto', 'qtde', 'preco'],
+          properties: {
+            produto: {
+              type: 'object',
+              required: ['id_produto'],
+              properties: {
+                id_produto: { type: 'number' },
+                nome: { type: 'string' },
+                preco: { type: 'number' },
+                sku: { type: 'string' }
+              }
+            },
+            qtde: { type: 'number' },
+            preco: { type: 'number' }
+          }
+        }
+      }
     }
   },
   response: {
@@ -82,7 +148,34 @@ export const updatePedidoSchema: FastifySchema = {
     type: 'object',
     properties: {
       data: { type: 'string', format: 'date' },
-      id_cliente: { type: 'number' }
+      cliente: {
+        type: 'object',
+        properties: {
+          id_cliente: { type: 'number' },
+          nome: { type: 'string' },
+          email: { type: 'string' },
+          telefone: { type: 'string' }
+        }
+      },
+      itens: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            produto: {
+              type: 'object',
+              properties: {
+                id_produto: { type: 'number' },
+                nome: { type: 'string' },
+                preco: { type: 'number' },
+                sku: { type: 'string' }
+              }
+            },
+            qtde: { type: 'number' },
+            preco: { type: 'number' }
+          }
+        }
+      }
     }
   },
   response: {

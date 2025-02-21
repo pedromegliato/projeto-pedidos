@@ -5,12 +5,20 @@
     :search="search"
     class="elevation-1"
   >
-    <template #[`item.preco`]="{ value }">
-      {{ formatCurrency(value) }}
+    <!-- Formatação do preço -->
+    <template v-slot:item.preco="slotProps">
+      {{ formatCurrency(slotProps.value) }}
     </template>
 
-    <template #[`item.actions`]="{ item }">
-      <slot name="actions" :item="item" />
+    <!-- Formatação do total -->
+    <template v-slot:item.total="slotProps">
+      <slot name="item.total" v-bind="slotProps">
+        {{ formatCurrency(slotProps.value) }}
+      </slot>
+    </template>
+
+    <template v-slot:item.actions="{ item }">
+      <slot name="actions" :item="item"></slot>
     </template>
   </v-data-table>
 </template>
@@ -33,12 +41,13 @@ export default defineComponent({
     search: {
       type: String,
       default: '',
-    }
+    },
   },
   methods: {
-    formatCurrency(value: number) {
+    formatCurrency(value: number | null | undefined) {
+      if (value == null) return 'R$ 0,00';
       return `R$ ${currencyFormatter.format(value)}`;
-    }
-  }
+    },
+  },
 });
 </script>

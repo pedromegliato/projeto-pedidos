@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: 'http://localhost:3000/api/v1',
+  baseURL: process.env.VUE_APP_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'

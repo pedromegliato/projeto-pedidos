@@ -11,7 +11,7 @@ export const usePedidoItem = (pedidoId: number) => {
   const selectedPedidoItem = ref<PedidoItem>({
     pedido: { data: new Date(), cliente: { id_cliente: 0, nome: '', email: '', telefone: '' } },
     produto: { id_produto: 0, nome: '', preco: 0 },
-    quantidade: 1,
+    qtde: 1,
     preco: 0
   });
 

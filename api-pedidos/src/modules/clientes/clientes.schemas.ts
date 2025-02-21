@@ -68,7 +68,8 @@ export const createClienteSchema: FastifySchema = {
       properties: {
         id_cliente: { type: 'number' },
         nome: { type: 'string' },
-        email: { type: 'string' }
+        email: { type: 'string' },
+        telefone: { type: 'string' }
       }
     }
   }

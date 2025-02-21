@@ -1,4 +1,3 @@
-// src/composables/usePedido.ts
 import { ref } from 'vue';
 import type { Pedido } from '@/types/pedido';
 import { getPedidos, createPedido, updatePedido, deletePedido } from '@/services/pedidoService';
@@ -8,7 +7,6 @@ export const usePedido = () => {
   const { success, error } = useToast();
   const pedidos = ref<Pedido[]>([]);
   const loading = ref(false);
-  // Renomeamos modalOpen para pedidoModalOpen para maior clareza
   const pedidoModalOpen = ref(false);
   const selectedPedido = ref<Pedido>({
     data: new Date(),
@@ -30,11 +28,19 @@ export const usePedido = () => {
 
   const savePedido = async (pedido: Pedido) => {
     try {
+      const cleanPedido = {
+        ...pedido,
+        itens: pedido.itens?.map(item => {
+          const { pedido, ...rest } = item;
+          return rest;
+        })
+      };
+
       if (pedido.id_pedido) {
-        await updatePedido(pedido.id_pedido, pedido);
+        await updatePedido(pedido.id_pedido, cleanPedido as any);
         success('Pedido atualizado com sucesso');
       } else {
-        await createPedido(pedido);
+        await createPedido(cleanPedido as any);
         success('Pedido criado com sucesso');
       }
       await fetchPedidos();
@@ -59,7 +65,7 @@ export const usePedido = () => {
   return {
     pedidos,
     loading,
-    pedidoModalOpen, // Agora existe esta propriedade
+    pedidoModalOpen,
     selectedPedido,
     fetchPedidos,
     savePedido,

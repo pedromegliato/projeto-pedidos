@@ -5,7 +5,7 @@ export interface PedidoItem {
   id_pedido_item?: number;
   pedido: Pedido;
   produto: Produto;
-  quantidade: number;
+  qtde: number;
   preco: number;
   data_criacao?: Date;
   data_atualizacao?: Date;

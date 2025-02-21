@@ -32,5 +32,16 @@ services:
     depends_on:
       - db
 
+  web-pedidos:
+    build: ./web-pedidos
+    container_name: web_pedidos
+    restart: always
+    environment:
+      VUE_APP_BASE_URL: http://api:3000/api/v1
+    ports:
+      - "8081:80"  
+    depends_on:
+      - api
+
 volumes:
   db_data:

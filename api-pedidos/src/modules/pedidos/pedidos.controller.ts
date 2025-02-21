@@ -1,7 +1,6 @@
-// src/modules/pedidos/pedidos.controller.ts
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { PedidosService } from './pedidos.service';
-import { CreatePedidoDTO, UpdatePedidoDTO } from './pedidos.dto';
+import { CreatePedidoPayloadDTO, UpdatePedidoPayloadDTO } from './pedidos.dto';
 
 const service = new PedidosService();
 
@@ -19,12 +18,15 @@ export class PedidosController {
     return reply.send(pedido);
   }
 
-  static async create(req: FastifyRequest<{ Body: CreatePedidoDTO }>, reply: FastifyReply) {
+  static async create(req: FastifyRequest<{ Body: CreatePedidoPayloadDTO }>, reply: FastifyReply) {
     const created = await service.create(req.body);
     return reply.status(201).send(created);
   }
 
-  static async update(req: FastifyRequest<{ Params: { id: string }; Body: UpdatePedidoDTO }>, reply: FastifyReply) {
+  static async update(
+    req: FastifyRequest<{ Params: { id: string }; Body: UpdatePedidoPayloadDTO }>,
+    reply: FastifyReply
+  ) {
     const updated = await service.update(Number(req.params.id), req.body);
     if (!updated) {
       return reply.status(404).send({ message: 'Pedido não encontrado' });

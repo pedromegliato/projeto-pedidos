@@ -2,18 +2,16 @@
   <v-card>
     <v-card-title>
       <div class="d-flex flex-column w-100">
-        <!-- Cabeçalho com título e botão para novo Pedido -->
         <div class="d-flex align-center justify-space-between">
           <span class="text-h5">Pedidos</span>
           <CustomButton variant="secondary" @click="openPedidoModal">
             Novo Pedido
           </CustomButton>
         </div>
-        <!-- Dropdown para filtrar pedidos por Cliente -->
         <v-select
           v-model="selectedClienteFiltro"
           :items="clientes"
-          item-text="nome"
+          item-title="nome"
           item-value="id_cliente"
           label="Filtrar por Cliente"
           dense
@@ -22,12 +20,12 @@
       </div>
     </v-card-title>
 
-    <!-- Data-table dos Pedidos -->
     <base-data-table
       :headers="headers"
       :items="pedidosFiltrados"
       :search="search"
       :loading="loading"
+      item-key="id_pedido"
     >
       <template #actions="{ item }">
         <v-icon small class="mr-2" @click="editPedido(item)">
@@ -36,13 +34,13 @@
         <v-icon small @click="openDeleteModal(item)">
           mdi-delete
         </v-icon>
-        <v-icon small @click="openItensModal(item)">
-          mdi-format-list-bulleted
-        </v-icon>
+      </template>
+
+      <template #item.total="{ item }">
+        {{ formatCurrency(item.total) }}
       </template>
     </base-data-table>
 
-    <!-- Modal de Pedido -->
     <PedidoModal
       v-model="pedidoModalOpen"
       :pedido="selectedPedido"
@@ -50,7 +48,6 @@
       @save="savePedido"
     />
 
-    <!-- Modal de Confirmação para Exclusão de Pedido -->
     <ConfirmationModal
       v-model="deleteModalOpen"
       :title="`Excluir Pedido #${pedidoToDelete.id_pedido}`"
@@ -61,13 +58,6 @@
       @confirm="handleDeleteConfirm"
       @cancel="handleDeleteCancel"
     />
-
-    <!-- Modal para Gerenciar Itens do Pedido -->
-    <PedidoItensModal
-      v-if="itensModalOpen"
-      :pedido="selectedPedido"
-      @close="itensModalOpen = false"
-    />
   </v-card>
 </template>
 
@@ -77,7 +67,6 @@ import type { Pedido } from '@/types/pedido';
 import type { Cliente } from '@/types/cliente';
 import BaseDataTable from '@/components/BaseDataTable.vue';
 import PedidoModal from '@/components/PedidoModal.vue';
-import PedidoItensModal from '@/components/PedidoItensModal.vue';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
 import CustomButton from '@/components/CustomButton.vue';
 import { usePedido } from '@/composables/usePedido';
@@ -88,18 +77,15 @@ export default defineComponent({
   components: {
     BaseDataTable,
     PedidoModal,
-    PedidoItensModal,
     ConfirmationModal,
     CustomButton,
   },
   setup() {
-    // Composable para pedidos
     const { pedidos, loading, pedidoModalOpen, selectedPedido, fetchPedidos, savePedido, deletePedidoHandler } = usePedido();
     const search = ref('');
     const clientes = ref<Cliente[]>([]);
     const selectedClienteFiltro = ref<number | null>(null);
 
-    // Busca clientes
     const fetchClientes = async () => {
       try {
         const { data } = await getClientes();
@@ -109,15 +95,25 @@ export default defineComponent({
       }
     };
 
-    // Filtra os pedidos conforme o cliente selecionado
+    const computeOrderTotal = (pedido: Pedido): number => {
+      if (!pedido.itens || !Array.isArray(pedido.itens)) return 0;
+      return pedido.itens.reduce((acc, item) => {
+        return acc + ((item.qtde || 0) * (item.preco || 0));
+      }, 0);
+    };
+
     const pedidosFiltrados = computed(() => {
-      if (!selectedClienteFiltro.value) return pedidos.value;
-      return pedidos.value.filter(
-        pedido => pedido.cliente.id_cliente === selectedClienteFiltro.value
-      );
+      let filtrados = !selectedClienteFiltro.value
+        ? pedidos.value
+        : pedidos.value.filter(
+            (pedido) => pedido.cliente?.id_cliente === selectedClienteFiltro.value
+          );
+      return filtrados.map((pedido) => ({
+        ...pedido,
+        total: computeOrderTotal(pedido)
+      }));
     });
 
-    // Para exclusão de pedido
     const deleteModalOpen = ref(false);
     const isDeleting = ref(false);
     const pedidoToDelete = ref<Pedido>({
@@ -162,13 +158,6 @@ export default defineComponent({
       };
     };
 
-    // Abre o modal para gerenciar os itens do pedido
-    const itensModalOpen = ref(false);
-    const openItensModal = (pedido: Pedido) => {
-      selectedPedido.value = { ...pedido };
-      itensModalOpen.value = true;
-    };
-
     onMounted(() => {
       fetchPedidos();
       fetchClientes();
@@ -178,8 +167,14 @@ export default defineComponent({
       { title: 'ID', key: 'id_pedido' },
       { title: 'Cliente', key: 'cliente.nome' },
       { title: 'Data', key: 'data' },
+      { title: 'Total', key: 'total' },
       { title: 'Ações', key: 'actions', sortable: false },
     ];
+
+    const formatCurrency = (value: number | null | undefined): string => {
+      if (value == null) return 'R$ 0,00';
+      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+    };
 
     return {
       pedidos,
@@ -200,9 +195,9 @@ export default defineComponent({
       pedidoToDelete,
       handleDeleteConfirm,
       handleDeleteCancel,
-      itensModalOpen,
-      openItensModal,
       headers,
+      computeOrderTotal,
+      formatCurrency,
     };
   },
 });

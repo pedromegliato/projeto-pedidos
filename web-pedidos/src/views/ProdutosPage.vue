@@ -1,4 +1,3 @@
-<!-- src/views/ProdutosPage.vue -->
 <template>
   <v-card>
     <v-card-title>
