@@ -2,9 +2,9 @@
 CREATE DATABASE IF NOT EXISTS db_pedidos;
 USE db_pedidos;
 
------------------------------------------------------------
+-- ---------------------------------------------------------
 -- Criação das tabelass
------------------------------------------------------------
+-- ---------------------------------------------------------
 -- Tabela: clientees
 CREATE TABLE IF NOT EXISTS clientes (
   id_cliente INT AUTO_INCREMENT PRIMARY KEY,
@@ -58,9 +58,9 @@ CREATE TABLE IF NOT EXISTS pedido_itens (
     ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
------------------------------------------------------------
+-- ---------------------------------------------------------
 -- Inserts de dados fictícios para clientes e produtos
------------------------------------------------------------
+-- ---------------------------------------------------------
 -- Inserindo 20 clintes
 INSERT INTO clientes (nome, email, telefone, endereco, cpf, data_nascimento) VALUES
 ('Cliente 1', 'cliente1@example.com', '1111-1111', 'Rua A, 123', '123.456.789-01', '1990-01-01'),
@@ -107,9 +107,9 @@ INSERT INTO produtos (nome, preco, sku) VALUES
 ('Produto 19', 100.00, 'SKU-0019'),
 ('Produto 20', 105.50, 'SKU-0020');
 
------------------------------------------------------------
+-- ---------------------------------------------------------
 -- Inserção de Pedidos e Pedido Itens com múltiplos itens por pedido
------------------------------------------------------------
+-- ---------------------------------------------------------
 
 DELIMITER $$
 
